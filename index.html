@@ -8,11 +8,14 @@
 <details class="more"><summary>Paste text instead</summary><form id="addf"><input id="novel" placeholder="Novel title"><input id="num" placeholder="Chapter number" inputmode="numeric"><input id="title" placeholder="Chapter name"><textarea id="txt" rows="6" placeholder="Paste English text you are allowed to use"></textarea><input type="file" id="file" accept=".txt,text/plain"><div class="row"><button class="primary">Save chapter</button><button type="button" id="sample">Add sample</button></div></form></details></section>
 <section id="ed" hidden><div id="edbox"></div></section>
 <section id="pl" hidden>
-<div id="stage"><img id="sceneimg" alt=""><div id="shade"></div><div id="cap"></div></div>
-<div id="ptitle"></div><div id="now"></div><div id="bar"><i id="barfill"></i></div>
-<div class="ctl"><button id="b-back" aria-label="Back">−3</button><button id="b-play" class="play">Play</button><button id="b-fwd" aria-label="Forward">+3</button></div>
-<div id="chips"><button data-r="0.8">0.8×</button><button data-r="0.9" class="on">0.9×</button><button data-r="1">1×</button><button data-r="1.2">1.2×</button><button id="b-stop">Stop</button></div><input type="hidden" id="rate" value="0.9">
-<details class="more"><summary>Voice and text size</summary><select id="voice"></select><input type="range" id="fs" min="14" max="28" value="18"></details><div id="plinfo"></div></section>
+<div id="stage"><img id="sceneimg" alt=""></div><div id="cap"></div>
+<div id="ptitle"></div>
+<div id="now"></div><div id="bar"><i id="barfill"></i></div>
+<div class="ctl"><button id="b-back" aria-label="Back">−3</button><button id="b-play" class="play">▶</button><button id="b-fwd" aria-label="Forward">+3</button></div>
+<div class="lab">Speed</div><div id="chips"><button data-r="0.8">0.8×</button><button data-r="1" class="on">1×</button><button data-r="1.5">1.5×</button><button data-r="2">2×</button><button data-r="2.5">2.5×</button><button data-r="3">3×</button></div><input type="hidden" id="rate" value="1">
+<div class="lab">Captions</div><div id="capm"><button data-c="hi">हिन्दी</button><button data-c="rom">Hinglish</button><button data-c="both" class="on">Both</button></div>
+<button id="b-stop" class="ghost">Stop</button>
+<details class="more"><summary>Voice and text size</summary><select id="voice"></select><input type="range" id="fs" min="16" max="32" value="22"></details><div id="plinfo"></div></section>
 <section id="im" hidden>
 <div class="card"><h3>Add images</h3><input id="itags" placeholder="Tags, comma separated (forest, night, hero)"><input type="file" id="ifile" accept="image/*" multiple></div>
 <input id="isearch" placeholder="Search tags…"><div id="igrid"></div></section>
@@ -20,9 +23,10 @@
 <div class="card"><h3>Backend</h3><input id="url" placeholder="https://your-worker.workers.dev"><div class="row"><button id="chk">Check backend</button></div><p id="chkout"></p></div>
 <div class="card"><h3>Translation</h3><label>Tone <select id="tone"><option>cinematic</option><option>mysterious</option><option>calm</option><option>dramatic</option><option>intense</option></select></label>
 <label>Glossary (one per line: English=हिन्दी)</label><textarea id="gloss" rows="5"></textarea></div>
-<div class="card"><h3>Images</h3><label><input type="checkbox" id="imgon"> Allow automatic image generation (optional)</label><p id="imgstate"></p><div class="row"><button id="prep">Prepare images for open chapter</button><button id="retry">Retry generation now</button></div></div>
+<div class="card"><h3>Images</h3><label><input type="checkbox" id="imgon"> Allow automatic image generation (optional)</label><label><input type="checkbox" id="fresh"> Make a new image for every scene (uses more free quota)</label><p id="imgstate"></p><div class="row"><button id="prep">Prepare images for open chapter</button><button id="retry">Retry generation now</button></div></div>
 <div class="card"><h3>Backup</h3><div class="row"><button id="exp">Export backup</button><label class="btn">Import<input type="file" id="imp" accept=".json" hidden></label></div><small>Browser storage can be cleared by you or your browser. Export regularly. Backup holds text and image info; download images from the Images tab.</small></div>
 <div class="card"><h3>Privacy</h3><small>Chapters, images, progress stay on this device (IndexedDB). Only the English text of the part being translated (and a scene prompt for optional images) is sent to your backend, which forwards it to Google Gemini / Cloudflare AI. Do not submit text you are not authorized to use.</small></div>
 </section></main>
+<div id="mini" hidden><span id="mtitle"></span><button id="mplay">▶</button></div>
 <nav id="nav"><button data-v="lib">Library</button><button data-v="ed">Editor</button><button data-v="pl">Player</button><button data-v="im">Images</button><button data-v="st">Settings</button></nav>
 <script src="app.js"></script></body></html>
