@@ -54,3 +54,12 @@ body.pl{background:#000}body.pl main{padding:0 16px 40px}
 #pl.vid #pdown{z-index:4}
 #pl.vid.hideui #pctl,#pl.vid.hideui #phead,#pl.vid.hideui #pdown{opacity:0;pointer-events:none}#pl.vid.hideui #now{bottom:60px}
 #pl.lyr #pctl,#pl.cov #pctl{display:block}
+/* Cover mode: picture, then captions, then chapter name */
+#pl.cov:not([hidden]){display:flex;flex-direction:column}
+#pl.cov #stage{order:1;flex:none;height:min(42vh,400px)}
+#pl.cov #cap{order:2}
+#pl.cov #now{display:block;order:3;min-height:6.5em;margin:8px 0 4px}
+#pl.cov #now .sd{display:none}
+#pl.cov #now p{margin:0 0 6px}
+#pl.cov #phead{order:4;margin-top:10px}
+#pl.cov #pctl{order:5}
