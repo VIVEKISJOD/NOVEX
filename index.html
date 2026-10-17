@@ -1,32 +1,48 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NOVEX</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0f0f10"><link rel="stylesheet" href="style.css"></head><body>
-<header><h1>NOVEX</h1></header>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NOVEX</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#000000"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body>
 <div id="msg" hidden></div>
 <main>
-<section id="lib"><div class="hero"><h2>Add a chapter</h2><p>Choose one or more TXT files. NOVEX translates, illustrates and moves on to the next chapter by itself.</p>
-<input id="bnovel" placeholder="Novel title"><input type="file" id="bfiles" accept=".txt,text/plain" multiple><button id="bgo" class="primary">Upload and process</button></div>
-<div id="qbar"></div><div id="chlist"></div>
+<section id="lib"><div id="top"><div><h1>NOVEX</h1><span id="greet">Hello</span></div><div class="ic"><button data-v="ad" aria-label="Add">＋</button><button data-v="st" aria-label="Settings">⚙</button></div></div>
+<div id="fchips"><button data-f="all" class="on">All</button><button data-f="ready">Ready</button><button data-f="todo">To create</button><button data-f="done">Finished</button></div>
+<div id="qbar"></div>
+<div class="sec"><small>YOUR NOVELS</small><h2>Listen again</h2></div><div id="tiles"></div>
+<div class="sec"><small>TAP A CHAPTER TO LISTEN</small><h2>Quick picks</h2></div><div id="chlist"></div></section>
+
+<section id="ad" hidden><div class="sec"><small>NEW</small><h2>Add a novel</h2></div>
+<div class="card"><h3>From a website</h3><input id="wurl" placeholder="Paste a chapter link or contents page link" inputmode="url"><div class="row"><button id="wgo" class="primary">Fetch</button></div><div id="wout"></div><small>Only use texts you are allowed to use: public domain, your own writing, or with the author's permission.</small>
+<details class="more"><summary>Saved websites</summary><div id="slist"></div><input id="sfname" placeholder="Name (e.g. My library)"><input id="sfurl" placeholder="Website or contents page link" inputmode="url"><details class="more"><summary>Advanced (only if text is read wrongly)</summary><input id="sftext" placeholder="Text box CSS selector (e.g. #chapter-content)"><input id="sftitle" placeholder="Chapter title CSS selector (e.g. h1)"><input id="sfnext" placeholder="Next button CSS selector (e.g. a.next)"></details><div class="row"><button id="sfadd">Save website</button></div></details></div>
+<div class="card"><h3>From TXT files</h3><input id="bnovel" placeholder="Novel title"><input type="file" id="bfiles" accept=".txt,text/plain" multiple><button id="bgo" class="primary wide">Upload and process</button></div>
 <details class="more"><summary>Paste text instead</summary><form id="addf"><input id="novel" placeholder="Novel title"><input id="num" placeholder="Chapter number" inputmode="numeric"><input id="title" placeholder="Chapter name"><textarea id="txt" rows="6" placeholder="Paste English text you are allowed to use"></textarea><input type="file" id="file" accept=".txt,text/plain"><div class="row"><button class="primary">Save chapter</button><button type="button" id="sample">Add sample</button></div></form></details></section>
+
+<section id="cr" hidden><div id="crbox"><div id="crimg"></div><small>CREATION MODE</small><h2 id="crt"></h2><p id="crs">Starting…</p><div id="crbar"><i id="crfill"></i></div><label class="crl"><input type="checkbox" id="crimgon"> Make new pictures with AI (free allowance)</label><div class="row"><button id="crplay" class="primary" hidden>▶ Play now</button><button id="crretry" class="primary" hidden>Try again</button><button id="crback">Back to Home</button></div></div></section>
+
 <section id="ed" hidden><div id="edbox"></div></section>
+
 <section id="pl" hidden>
+<div id="pbg"></div>
+<button id="pdown" aria-label="Close player">⌄</button>
 <div id="stage"><img id="sceneimg" alt=""></div><div id="cap"></div>
-<div id="ptitle"></div>
-<div id="now"></div><div id="bar"><i id="barfill"></i></div>
+<div id="phead"><img id="pthumb" alt=""><div id="ptitle"></div><button id="b-stop" aria-label="Stop">■</button></div>
+<div id="now"></div>
+<div id="bar"><i id="barfill"></i></div><div id="times"><span id="tl"></span><span id="tr"></span></div>
 <div class="ctl"><button id="b-back" aria-label="Back">−3</button><button id="b-play" class="play">▶</button><button id="b-fwd" aria-label="Forward">+3</button></div>
+<div id="pbot"><button id="b-lyr">Lyrics</button></div>
+<details class="more" id="pset"><summary>Speed, captions and voice</summary>
 <div class="lab">Speed</div><div id="chips"><button data-r="0.8">0.8×</button><button data-r="1" class="on">1×</button><button data-r="1.5">1.5×</button><button data-r="2">2×</button><button data-r="2.5">2.5×</button><button data-r="3">3×</button></div><input type="hidden" id="rate" value="1">
 <div class="lab">Captions</div><div id="capm"><button data-c="hi">हिन्दी</button><button data-c="rom">Hinglish</button><button data-c="both" class="on">Both</button></div>
-<button id="b-stop" class="ghost">Stop</button>
-<details class="more"><summary>Voice and text size</summary><select id="voice"></select><input type="range" id="fs" min="16" max="32" value="22"></details><div id="plinfo"></div></section>
-<section id="im" hidden>
+<div class="lab">Voice and text size</div><select id="voice"></select><input type="range" id="fs" min="16" max="36" value="26"><div id="plinfo"></div></details></section>
+
+<section id="im" hidden><div class="sec"><small>YOUR PICTURES</small><h2>Images</h2></div>
 <div class="card"><h3>Add images</h3><input id="itags" placeholder="Tags, comma separated (forest, night, hero)"><input type="file" id="ifile" accept="image/*" multiple></div>
 <input id="isearch" placeholder="Search tags…"><div id="igrid"></div></section>
-<section id="st" hidden>
+
+<section id="st" hidden><div class="sec"><small>APP</small><h2>Settings</h2></div>
 <div class="card"><h3>Backend</h3><input id="url" placeholder="https://your-worker.workers.dev"><div class="row"><button id="chk">Check backend</button></div><p id="chkout"></p></div>
 <div class="card"><h3>Translation</h3><label>Tone <select id="tone"><option>cinematic</option><option>mysterious</option><option>calm</option><option>dramatic</option><option>intense</option></select></label>
 <label>Glossary (one per line: English=हिन्दी)</label><textarea id="gloss" rows="5"></textarea></div>
 <div class="card"><h3>Images</h3><label><input type="checkbox" id="imgon"> Allow automatic image generation (optional)</label><label><input type="checkbox" id="fresh"> Make a new image for every scene (uses more free quota)</label><p id="imgstate"></p><div class="row"><button id="prep">Prepare images for open chapter</button><button id="retry">Retry generation now</button></div></div>
 <div class="card"><h3>Backup</h3><div class="row"><button id="exp">Export backup</button><label class="btn">Import<input type="file" id="imp" accept=".json" hidden></label></div><small>Browser storage can be cleared by you or your browser. Export regularly. Backup holds text and image info; download images from the Images tab.</small></div>
-<div class="card"><h3>Privacy</h3><small>Chapters, images, progress stay on this device (IndexedDB). Only the English text of the part being translated (and a scene prompt for optional images) is sent to your backend, which forwards it to Google Gemini / Cloudflare AI. Do not submit text you are not authorized to use.</small></div>
+<div class="card"><h3>Privacy</h3><small>Chapters, images, progress and saved websites stay on this device. Web pages you import are downloaded through your own backend. Only the English text of the part being translated (and a scene prompt for optional images) is sent to Google Gemini / Cloudflare AI. Do not submit text you are not authorized to use.</small></div>
 </section></main>
-<div id="mini" hidden><span id="mtitle"></span><button id="mplay">▶</button></div>
-<nav id="nav"><button data-v="lib">Library</button><button data-v="ed">Editor</button><button data-v="pl">Player</button><button data-v="im">Images</button><button data-v="st">Settings</button></nav>
-<script src="app.js"></script></body></html>
+<div id="mini" hidden><img id="mthumb" alt=""><div class="mt"><b id="mtitle"></b><small id="msub"></small></div><button id="mplay">▶</button></div>
+<div id="navw"><nav id="nav"><button data-v="lib"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</button><button data-v="im"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>Images</button><button data-v="st"><svg viewBox="0 0 24 24"><path d="M19.4 13a7.7 7.7 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3.3h-4l-.4 2.6a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.7 7.7 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1c.5.4 1.1.7 1.7 1l.4 2.6h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.5zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>Settings</button></nav><button id="navadd" data-v="ad" aria-label="Add novel"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button></div>
+<script src="app.js"></script><script src="sources.js"></script></body></html>
