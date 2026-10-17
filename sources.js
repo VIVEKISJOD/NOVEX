@@ -5,7 +5,7 @@ const srcFor=u=>SRCS().find(s=>s.host===hostOf(u));
 const numCmp=(a,b)=>(a+'').localeCompare(b+'',undefined,{numeric:true});
 function setBg(s){const im=$('#sceneimg');im.style.animation='none';void im.offsetWidth;im.style.animation='';const b=$('#pbg');if(b)b.style.backgroundImage='url("'+s+'")';$('#pthumb').src=s;$('#mthumb').src=s}
 function uiX(){if(!cur)return;$('#ptitle').innerHTML='<b>'+esc(cur.title||'Chapter '+cur.num)+'</b><small>'+esc(cur.novel)+' · Ch '+esc(cur.num)+'</small>';$('#tl').textContent=segs.length?'Part '+Math.min(si+1,segs.length)+' / '+segs.length:'';$('#tr').textContent=segs.length?Math.round(100*si/segs.length)+'%':''}
-function show(v){document.body.className=v;$$('main>section').forEach(s=>s.hidden=s.id!==v);$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({lib:renderLib,ed:renderEd,pl:renderPl,im:renderIm,st:renderSt,ad:renderAd,cr:()=>{}})[v]();scrollTo(0,0)}
+function show(v,pop){if(!pop&&!(history.state&&history.state.v===v))history.pushState({v},'');document.body.className=v;$$('main>section').forEach(s=>s.hidden=s.id!==v);$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({lib:renderLib,ed:renderEd,pl:renderPl,im:renderIm,st:renderSt,ad:renderAd,cr:()=>{}})[v]();scrollTo(0,0)}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b&&!b.closest('#nav'))show(b.dataset.v)});
 
 /* ---------- Home ---------- */
@@ -34,17 +34,17 @@ $('#lib').addEventListener('click',async e=>{const t=e.target.closest('[data-ope
 /* ---------- Creation mode: translate + images, then listen ---------- */
 let crRun=false,crId=null,crT;
 async function createAndListen(id){const c=await DB.get('chapters',id);if(!c)return;
- if(c.chunks.every(k=>k.status==='done')){cur=c;curScene=null;return show('pl')}
+ const EN=S.get('lang','hi')==='en';if(EN?(!S.get('imgon',false)||c.scenes.every(s=>s.imageId)):c.chunks.every(k=>k.status==='done')){cur=c;curScene=null;return show('pl')}
  if(crRun&&crId===id)return show('cr');
  if(crRun)return msg('Another chapter is being created. Please wait for it to finish.',1);
- if(!S.get('url','')){msg('Set your backend link in Settings first.',1);return show('st')}
+ if(!S.get('url','')&&!(EN&&!S.get('imgon',false))){msg('Set your backend link in Settings first.',1);return show('st')}
  cur=c;curScene=null;crId=id;show('cr');$('#crimgon').checked=S.get('imgon',false);crStart(c)}
-function crUpd(c){const d=c.chunks.filter(k=>k.status==='done').length,n=c.chunks.length,im=c.scenes.filter(s=>s.imageId).length,m=c.scenes.length;$('#crfill').style.width=Math.round(100*(d+im)/Math.max(1,n+m))+'%';
- if(!crRun)return;$('#crs').textContent=d<n?'Translating to Hindi: part '+(d+1)+' of '+n+'…':'Making pictures: '+im+' of '+m+' scenes…';
+function crUpd(c){const d=c.chunks.filter(k=>k.status==='done').length,n=c.chunks.length,im=c.scenes.filter(s=>s.imageId).length,m=c.scenes.length;const EN=S.get('lang','hi')==='en';$('#crfill').style.width=Math.round(EN?100*im/Math.max(1,m):100*(d+im)/Math.max(1,n+m))+'%';
+ if(!crRun)return;$('#crs').textContent=d<n&&!EN?'Translating to Hindi: part '+(d+1)+' of '+n+'…':'Making pictures: '+im+' of '+m+' scenes…';
  const i=c.scenes.find(s=>s.imageId);if(i)DB.get('images',i.imageId).then(x=>{if(x)$('#crimg').style.backgroundImage='url("'+blobUrl(x)+'")'})}
 async function crStart(c){$('#crt').textContent=(c.title||'Chapter '+c.num)+' · '+c.novel;$('#crplay').hidden=$('#crretry').hidden=true;$('#crimg').style.backgroundImage='';
  crRun=true;wake();clearInterval(crT);crT=setInterval(()=>crUpd(c),600);crUpd(c);
- try{await procChapter(c);crRun=false;crUpd(c);$('#crfill').style.width='100%';$('#crs').textContent='Ready! This chapter can now be listened to.';$('#crplay').hidden=false;if(document.body.className!=='cr')msg('"'+(c.title||'Chapter '+c.num)+'" is ready to listen.')}
+ try{await(S.get('lang','hi')==='en'?prepare(c):procChapter(c));crRun=false;crUpd(c);$('#crfill').style.width='100%';$('#crs').textContent='Ready! This chapter can now be listened to.';$('#crplay').hidden=false;if(document.body.className!=='cr')msg('"'+(c.title||'Chapter '+c.num)+'" is ready to listen.')}
  catch(e){crRun=false;$('#crs').textContent='Stopped: '+friendly(e);$('#crretry').hidden=false}
  clearInterval(crT);crRun=false;if(document.body.className==='lib')renderLib()}
 $('#crplay').onclick=async()=>{cur=await DB.get('chapters',crId);curScene=null;show('pl');$('#b-play').click()};
@@ -99,6 +99,14 @@ $('#sfadd').onclick=()=>{const u=$('#sfurl').value.trim(),h=hostOf(u);if(!h)retu
 function applyMode(){const m=S.get('pmode','vid'),p=$('#pl');p.classList.remove('lyr','vid','cov');p.classList.add(m);$$('#pbot button').forEach(b=>b.classList.toggle('on',b.dataset.m===m))}
 $('#pbot').onclick=e=>{const m=e.target.dataset.m;if(m){S.set('pmode',m);applyMode()}};
 $('#stage').onclick=()=>{if($('#pl').classList.contains('vid'))$('#pl').classList.toggle('hideui')};
-$('#pdown').onclick=()=>show('lib');
+$('#pdown').onclick=()=>history.state&&history.state.v!=='lib'?history.back():show('lib');
 $('#fs').value=Math.max(+$('#fs').value,26);
 applyMode();
+
+function applyLang(){const g=S.get('lang','hi');$$('#langm button').forEach(b=>b.classList.toggle('on',b.dataset.g===g))}
+$('#langm').onclick=e=>{const g=e.target.dataset.g;if(!g||g===S.get('lang','hi'))return;const r=segs.length?si/segs.length:0;playing=false;stopU();S.set('lang',g);applyLang();if(cur){curScene=null;mkSegs();cur.pos=Math.floor(r*segs.length);DB.put('chapters',cur);renderPl()}};
+applyLang();
+
+/* Back button / back gesture moves between screens instead of leaving the app */
+history.replaceState({v:'lib'},'');
+window.addEventListener('popstate',e=>{const v=(e.state&&e.state.v)||'lib';if(!$('#'+v)){return show('lib',true)}show(v,true)});

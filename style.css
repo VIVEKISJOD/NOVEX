@@ -63,3 +63,5 @@ body.pl{background:#000}body.pl main{padding:0 16px 40px}
 #pl.cov #now p{margin:0 0 6px}
 #pl.cov #phead{order:4;margin-top:10px}
 #pl.cov #pctl{order:5}
+#langm{display:flex;gap:8px}#langm button{padding:8px 18px;font-size:13px;background:#ffffff1f}#langm button.on{background:var(--ac);color:var(--acd)}
+html,body{overscroll-behavior-y:contain}
