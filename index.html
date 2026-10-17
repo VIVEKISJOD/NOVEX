@@ -1,0 +1,32 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hindi StoryVerse</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#120d1c"><link rel="stylesheet" href="style.css"></head><body>
+<header><h1>📖 Hindi StoryVerse</h1><nav id="nav"><button data-v="lib">Library</button><button data-v="ed">Editor</button><button data-v="pl">Player</button><button data-v="im">Images</button><button data-v="st">Settings</button></nav></header>
+<div id="msg" hidden></div>
+<main>
+<section id="lib">
+<form id="addf" class="card"><h3>Add chapter</h3>
+<input id="novel" placeholder="Novel title"><input id="num" placeholder="Chapter number" inputmode="numeric"><input id="title" placeholder="Chapter name">
+<textarea id="txt" rows="6" placeholder="Paste English text you are allowed to use…"></textarea>
+<label>or TXT file: <input type="file" id="file" accept=".txt,text/plain"></label>
+<div class="row"><button>Save chapter</button><button type="button" id="sample">Add sample</button></div></form>
+<div id="chlist"></div></section>
+<section id="ed" hidden><div id="edbox"></div></section>
+<section id="pl" hidden>
+<div id="stage"><img id="sceneimg" alt=""><div id="cap"></div></div>
+<div id="now"></div><div id="bar"><i id="barfill"></i></div>
+<div class="row"><button id="b-back">⏪</button><button id="b-play">▶ Play</button><button id="b-stop">⏹</button><button id="b-fwd">⏩</button></div>
+<label>Speed <input type="range" id="rate" min="0.6" max="1.5" step="0.1" value="0.9"></label>
+<label>Voice <select id="voice"></select></label>
+<label>Text size <input type="range" id="fs" min="14" max="28" value="18"></label>
+<div id="plinfo"></div></section>
+<section id="im" hidden>
+<div class="card"><h3>Add images</h3><input id="itags" placeholder="Tags, comma separated (forest, night, hero)"><input type="file" id="ifile" accept="image/*" multiple></div>
+<input id="isearch" placeholder="Search tags…"><div id="igrid"></div></section>
+<section id="st" hidden>
+<div class="card"><h3>Backend</h3><input id="url" placeholder="https://your-worker.workers.dev"><div class="row"><button id="chk">Check backend</button></div><p id="chkout"></p></div>
+<div class="card"><h3>Translation</h3><label>Tone <select id="tone"><option>cinematic</option><option>mysterious</option><option>calm</option><option>dramatic</option><option>intense</option></select></label>
+<label>Glossary (one per line: English=हिन्दी)</label><textarea id="gloss" rows="5"></textarea></div>
+<div class="card"><h3>Images</h3><label><input type="checkbox" id="imgon"> Allow automatic image generation (optional)</label><p id="imgstate"></p><div class="row"><button id="prep">Prepare images for open chapter</button><button id="retry">Retry generation now</button></div></div>
+<div class="card"><h3>Backup</h3><div class="row"><button id="exp">Export backup</button><label class="btn">Import<input type="file" id="imp" accept=".json" hidden></label></div><small>Browser storage can be cleared by you or your browser. Export regularly. Backup holds text and image info; download images from the Images tab.</small></div>
+<div class="card"><h3>Privacy</h3><small>Chapters, images, progress stay on this device (IndexedDB). Only the English text of the part being translated (and a scene prompt for optional images) is sent to your backend, which forwards it to Google Gemini / Cloudflare AI. Do not submit text you are not authorized to use.</small></div>
+</section></main>
+<script src="app.js"></script></body></html>
