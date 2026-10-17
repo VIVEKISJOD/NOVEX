@@ -23,13 +23,13 @@
 <div id="stage"><img id="sceneimg" alt=""></div><div id="cap"></div>
 <div id="phead"><img id="pthumb" alt=""><div id="ptitle"></div><button id="b-stop" aria-label="Stop">■</button></div>
 <div id="now"></div>
-<div id="bar"><i id="barfill"></i></div><div id="times"><span id="tl"></span><span id="tr"></span></div>
+<div id="pctl"><div id="bar"><i id="barfill"></i></div><div id="times"><span id="tl"></span><span id="tr"></span></div>
 <div class="ctl"><button id="b-back" aria-label="Back">−3</button><button id="b-play" class="play">▶</button><button id="b-fwd" aria-label="Forward">+3</button></div>
-<div id="pbot"><button id="b-lyr">Lyrics</button></div>
+<div id="pbot"><button data-m="cov">Cover</button><button data-m="lyr">Lyrics</button><button data-m="vid">Video</button></div>
 <details class="more" id="pset"><summary>Speed, captions and voice</summary>
 <div class="lab">Speed</div><div id="chips"><button data-r="0.8">0.8×</button><button data-r="1" class="on">1×</button><button data-r="1.5">1.5×</button><button data-r="2">2×</button><button data-r="2.5">2.5×</button><button data-r="3">3×</button></div><input type="hidden" id="rate" value="1">
 <div class="lab">Captions</div><div id="capm"><button data-c="hi">हिन्दी</button><button data-c="rom">Hinglish</button><button data-c="both" class="on">Both</button></div>
-<div class="lab">Voice and text size</div><select id="voice"></select><input type="range" id="fs" min="16" max="36" value="26"><div id="plinfo"></div></details></section>
+<div class="lab">Voice and text size</div><select id="voice"></select><input type="range" id="fs" min="16" max="36" value="26"><div id="plinfo"></div></details></div></section>
 
 <section id="im" hidden><div class="sec"><small>YOUR PICTURES</small><h2>Images</h2></div>
 <div class="card"><h3>Add images</h3><input id="itags" placeholder="Tags, comma separated (forest, night, hero)"><input type="file" id="ifile" accept="image/*" multiple></div>

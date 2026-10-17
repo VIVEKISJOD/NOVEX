@@ -3,7 +3,7 @@ const hostOf=u=>{try{return new URL(u).hostname.replace(/^www\./,'')}catch{retur
 const SRCS=()=>S.get('sources',[]);
 const srcFor=u=>SRCS().find(s=>s.host===hostOf(u));
 const numCmp=(a,b)=>(a+'').localeCompare(b+'',undefined,{numeric:true});
-function setBg(s){const b=$('#pbg');if(b)b.style.backgroundImage='url("'+s+'")';$('#pthumb').src=s;$('#mthumb').src=s}
+function setBg(s){const im=$('#sceneimg');im.style.animation='none';void im.offsetWidth;im.style.animation='';const b=$('#pbg');if(b)b.style.backgroundImage='url("'+s+'")';$('#pthumb').src=s;$('#mthumb').src=s}
 function uiX(){if(!cur)return;$('#ptitle').innerHTML='<b>'+esc(cur.title||'Chapter '+cur.num)+'</b><small>'+esc(cur.novel)+' · Ch '+esc(cur.num)+'</small>';$('#tl').textContent=segs.length?'Part '+Math.min(si+1,segs.length)+' / '+segs.length:'';$('#tr').textContent=segs.length?Math.round(100*si/segs.length)+'%':''}
 function show(v){document.body.className=v;$$('main>section').forEach(s=>s.hidden=s.id!==v);$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));({lib:renderLib,ed:renderEd,pl:renderPl,im:renderIm,st:renderSt,ad:renderAd,cr:()=>{}})[v]();scrollTo(0,0)}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b&&!b.closest('#nav'))show(b.dataset.v)});
@@ -96,8 +96,9 @@ $('#slist').onclick=e=>{const d=e.target.dataset,l=SRCS();if(d.use!==undefined){
 $('#sfadd').onclick=()=>{const u=$('#sfurl').value.trim(),h=hostOf(u);if(!h)return msg('Enter a full website link first.',1);const l=SRCS().filter(s=>s.host!==h);l.push({name:$('#sfname').value.trim()||h,host:h,url:u,selText:$('#sftext').value.trim(),selTitle:$('#sftitle').value.trim(),selNext:$('#sfnext').value.trim()});S.set('sources',l);['#sfname','#sfurl','#sftext','#sftitle','#sfnext'].forEach(s=>$(s).value='');renderAd();msg('Website saved.')};
 
 /* ---------- player extras ---------- */
-function applyLyr(){const on=S.get('lyr',false);$('#pl').classList.toggle('lyr',on);$('#b-lyr').classList.toggle('on',on)}
-$('#b-lyr').onclick=()=>{S.set('lyr',!S.get('lyr',false));applyLyr()};
+function applyMode(){const m=S.get('pmode','vid'),p=$('#pl');p.classList.remove('lyr','vid','cov');p.classList.add(m);$$('#pbot button').forEach(b=>b.classList.toggle('on',b.dataset.m===m))}
+$('#pbot').onclick=e=>{const m=e.target.dataset.m;if(m){S.set('pmode',m);applyMode()}};
+$('#stage').onclick=()=>{if($('#pl').classList.contains('vid'))$('#pl').classList.toggle('hideui')};
 $('#pdown').onclick=()=>show('lib');
 $('#fs').value=Math.max(+$('#fs').value,26);
-applyLyr();
+applyMode();
